@@ -15,10 +15,7 @@ defmodule Exzeitable do
     # coveralls-ignore-stop
 
     quote do
-      use Phoenix.LiveView
-      use Phoenix.HTML
-      import Ecto.Query
-      alias Phoenix.LiveView.Helpers
+      require Ecto.Query
       alias Exzeitable.{Database, Filter, Format, HTML, Params, Validation}
       @callback render(map) :: {:ok, iolist}
       @type socket :: Phoenix.LiveView.Socket.t()
