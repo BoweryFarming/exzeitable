@@ -2,7 +2,7 @@ defmodule TestWeb.UserFormattedTable do
   @moduledoc "User table"
   use Phoenix.LiveView
   use Phoenix.HTML
-  require Ecto.Query
+  import Ecto.Query
   alias TestWeb.Router.Helpers, as: Routes
   alias TestWeb.User
 
