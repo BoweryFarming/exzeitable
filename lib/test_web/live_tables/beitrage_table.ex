@@ -1,5 +1,9 @@
 defmodule TestWeb.BeitrageTable do
   @moduledoc "Users post table in German"
+  use Phoenix.LiveView
+  use Phoenix.HTML
+  require Ecto.Query
+
   alias TestWeb.Post
   alias TestWeb.Router.Helpers, as: Routes
 
