@@ -15,7 +15,7 @@ defmodule Exzeitable do
     # coveralls-ignore-stop
 
     quote do
-      Import Ecto.Query
+      import Ecto.Query
       alias Exzeitable.{Database, Filter, Format, HTML, Params, Validation}
       @callback render(map) :: {:ok, iolist}
       @type socket :: Phoenix.LiveView.Socket.t()
