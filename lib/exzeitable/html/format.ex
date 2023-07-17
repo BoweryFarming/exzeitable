@@ -6,6 +6,7 @@ defmodule Exzeitable.HTML.Format do
   @doc """
   If function: true, will pass the entry to the function of the same name as the entry
   Else just output the field
+  If function: function, will just invoke the function
   This function is tested but coveralls will not register it.
   """
   @spec field(map, atom, map) :: String.t() | {:safe, iolist}
@@ -17,12 +18,16 @@ defmodule Exzeitable.HTML.Format do
           assigns: assigns
         }
       }) do
-    if Kernel.get_in(fields, [key, :function]) do
-      socket = smush_assigns_together(socket, assigns)
+    socket = smush_assigns_together(socket, assigns)
+    case Kernel.get_in(fields, [key, :function]) do
+      term when is_boolean(term) and term ->
+        apply(module, key, [socket, entry])
 
-      apply(module, key, [socket, entry])
-    else
-      Map.get(entry, key, nil)
+      term when is_function(term) ->
+        apply(term, [socket, entry])
+
+      _ ->
+        Map.get(entry, key, nil)
     end
     |> format_field(fields[key].formatter)
   end
