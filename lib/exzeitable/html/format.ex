@@ -10,15 +10,18 @@ defmodule Exzeitable.HTML.Format do
   This function is tested but coveralls will not register it.
   """
   @spec field(map, atom, map) :: String.t() | {:safe, iolist}
-  def field(entry, key, %{
-        socket: socket,
-        params: %Params{
-          fields: fields,
-          module: module,
-          assigns: _assigns
-        }
-      }) do
-    # socket = smush_assigns_together(socket, assigns)
+  def field(
+        entry,
+        key,
+        %{
+          params: %Params{
+            fields: fields,
+            module: module
+          }
+        } = root_assigns
+      ) do
+    socket = smush_assigns_together(root_assigns)
+
     case Kernel.get_in(fields, [key, :function]) do
       term when is_boolean(term) and term ->
         apply(module, key, [socket, entry])
@@ -48,11 +51,15 @@ defmodule Exzeitable.HTML.Format do
   end
 
   # We want socket.assigns, but not socket.assigns.assigns
-  defp smush_assigns_together(socket, assigns) do
-    socket
-    |> Map.fetch!(:assigns)
-    |> Map.delete(:assigns)
-    |> Map.merge(assigns)
+  defp smush_assigns_together(%{socket: socket, params: %{assigns: param_assigns}} = root_assigns) do
+    # there are 3 assigns
+    # root_assigns
+    # root_assigns.params.assigns (from the use Exzeitable)
+    # root_assigns.socket.assigns (always nil)
+
+    root_assigns
+    |> Map.delete(:socket)
+    |> Map.merge(param_assigns)
     |> then(&Map.put(socket, :assigns, &1))
   end
 
