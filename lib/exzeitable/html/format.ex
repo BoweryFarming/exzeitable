@@ -15,10 +15,10 @@ defmodule Exzeitable.HTML.Format do
         params: %Params{
           fields: fields,
           module: module,
-          assigns: assigns
+          assigns: _assigns
         }
       }) do
-    socket = smush_assigns_together(socket, assigns)
+    # socket = smush_assigns_together(socket, assigns)
     case Kernel.get_in(fields, [key, :function]) do
       term when is_boolean(term) and term ->
         apply(module, key, [socket, entry])
