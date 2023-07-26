@@ -60,7 +60,12 @@ defmodule Exzeitable do
       end
 
       def mount(_map, assigns, socket) do
-        assigns = %{params: Params.new([], unquote(opts), __MODULE__)}
+        param_assigns = Keyword.get(unquote(opts), :assigns, %{})
+
+        # put the param assigns on the root assigns
+        assigns =
+          %{params: Params.new([], unquote(opts), __MODULE__)}
+          |> Map.merge(param_assigns)
 
         socket =
           socket
