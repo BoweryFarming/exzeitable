@@ -45,27 +45,27 @@ defmodule Exzeitable.HTML.Pagination do
   defp paginate_button(%Params{} = params, :next, page, page) do
     params
     |> Text.text(:next)
-    |> Helpers.tag(:a, class: "exz-pagination-a", tabindex: "-1")
+    |> Helpers.tag(:a, params, class: "exz-pagination-a", tabindex: "-1")
     |> Helpers.tag(:li, class: "exz-pagination-li-disabled")
   end
 
   defp paginate_button(%Params{} = params, :previous, 1, _pages) do
     params
     |> Text.text(:previous)
-    |> Helpers.tag(:a, class: "exz-pagination-a", tabindex: "-1")
+    |> Helpers.tag(:a, params, class: "exz-pagination-a", tabindex: "-1")
     |> Helpers.tag(:li, class: "exz-pagination-li-disabled")
   end
 
-  defp paginate_button(_params, :dots, _page, _pages) do
+  defp paginate_button(params, :dots, _page, _pages) do
     "...."
-    |> Helpers.tag(:a, class: "exz-pagination-a exz-pagination-width", tabindex: "-1")
+    |> Helpers.tag(:a, params, class: "exz-pagination-a exz-pagination-width", tabindex: "-1")
     |> Helpers.tag(:li, class: "exz-pagination-li-disabled")
   end
 
   defp paginate_button(%Params{} = params, :next, page, _pages) do
     params
     |> Text.text(:next)
-    |> Helpers.tag(:a,
+    |> Helpers.tag(:a, params,
       class: "exz-pagination-a",
       style: "cursor: pointer",
       "phx-click": "change_page",
@@ -77,7 +77,7 @@ defmodule Exzeitable.HTML.Pagination do
   defp paginate_button(%Params{} = params, :previous, page, _pages) do
     params
     |> Text.text(:previous)
-    |> Helpers.tag(:a,
+    |> Helpers.tag(:a, params,
       class: "exz-pagination-a",
       style: "cursor: pointer",
       "phx-click": "change_page",
@@ -86,13 +86,13 @@ defmodule Exzeitable.HTML.Pagination do
     |> Helpers.tag(:li, class: "exz-pagination-li")
   end
 
-  defp paginate_button(_params, page, page, _pages) when is_integer(page) do
-    Helpers.tag(page, :a, class: "exz-pagination-a exz-pagination-width")
+  defp paginate_button(params, page, page, _pages) when is_integer(page) do
+    Helpers.tag(page, :a, params, class: "exz-pagination-a exz-pagination-width")
     |> Helpers.tag(:li, class: "exz-pagination-li-active")
   end
 
-  defp paginate_button(_params, page, _page, _pages) when is_integer(page) do
-    Helpers.tag(page, :a,
+  defp paginate_button(params, page, _page, _pages) when is_integer(page) do
+    Helpers.tag(page, :a, params,
       class: "exz-pagination-a exz-pagination-width",
       style: "cursor: pointer",
       "phx-click": "change_page",

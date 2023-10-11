@@ -21,10 +21,14 @@ defmodule Exzeitable.Params do
           fields: [{column, keyword}],
           module: module,
           csrf_token: String.t(),
+          # added for live_components
+          id: String.t(),
           # optional
           order: [{:asc | :desc, column}] | nil,
           parent: struct | nil,
           belongs_to: atom | nil,
+          # filters added
+          filters: [struct],
           page: pos_integer,
           count: non_neg_integer,
           list: [struct],
@@ -50,10 +54,12 @@ defmodule Exzeitable.Params do
     :fields,
     :module,
     :csrf_token,
+    :id,
     # optional
     :order,
     :parent,
     :belongs_to,
+    filters: [],
     page: 1,
     count: 0,
     list: [],
