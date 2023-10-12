@@ -6,23 +6,31 @@ defmodule Exzeitable.HTML.Format do
   @doc """
   If function: true, will pass the entry to the function of the same name as the entry
   Else just output the field
+  If function: function, will just invoke the function
   This function is tested but coveralls will not register it.
   """
   @spec field(map, atom, map) :: String.t() | {:safe, iolist}
-  def field(entry, key, %{
-        socket: socket,
-        params: %Params{
-          fields: fields,
-          module: module,
-          assigns: assigns
-        }
-      }) do
-    if Kernel.get_in(fields, [key, :function]) do
-      socket = smush_assigns_together(socket, assigns)
+  def field(
+        entry,
+        key,
+        %{
+          params: %Params{
+            fields: fields,
+            module: module
+          }
+        } = root_assigns
+      ) do
+    socket = smush_assigns_together(root_assigns)
 
-      apply(module, key, [socket, entry])
-    else
-      Map.get(entry, key, nil)
+    case Kernel.get_in(fields, [key, :function]) do
+      term when is_boolean(term) and term ->
+        apply(module, key, [socket, entry])
+
+      term when is_function(term) ->
+        apply(term, [socket, entry])
+
+      _ ->
+        Map.get(entry, key, nil)
     end
     |> format_field(fields[key].formatter)
   end
@@ -43,11 +51,15 @@ defmodule Exzeitable.HTML.Format do
   end
 
   # We want socket.assigns, but not socket.assigns.assigns
-  defp smush_assigns_together(socket, assigns) do
-    socket
-    |> Map.fetch!(:assigns)
-    |> Map.delete(:assigns)
-    |> Map.merge(assigns)
+  defp smush_assigns_together(%{socket: socket, params: %{assigns: param_assigns}} = root_assigns) do
+    # there are 3 assigns
+    # root_assigns
+    # root_assigns.params.assigns (from the use Exzeitable)
+    # root_assigns.socket.assigns (always nil)
+
+    root_assigns
+    |> Map.delete(:socket)
+    |> Map.merge(param_assigns)
     |> then(&Map.put(socket, :assigns, &1))
   end
 

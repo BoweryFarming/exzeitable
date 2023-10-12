@@ -70,7 +70,7 @@ defmodule Exzeitable.HTML.Table do
   defp hide_link_for({key, _value}, %Params{} = params) do
     params
     |> Text.text(:hide)
-    |> Helpers.tag(:a,
+    |> Helpers.tag(:a, params,
       class: "exz-hide-link",
       "phx-click": "hide_column",
       "phx-value-column": key
@@ -91,11 +91,22 @@ defmodule Exzeitable.HTML.Table do
         _ -> "#{sort}  "
       end
 
-    Tag.content_tag(:a, label,
-      class: "exz-sort-link",
-      "phx-click": "sort_column",
-      "phx-value-column": key
-    )
+    case Map.get(params, :id) do
+      nil ->
+        Tag.content_tag(:a, label,
+          class: "exz-sort-link",
+          "phx-click": "sort_column",
+          "phx-value-column": key
+        )
+
+      id ->
+        Tag.content_tag(:a, label,
+          class: "exz-sort-link",
+          "phx-click": "sort_column",
+          "phx-value-column": key,
+          "phx-target": id
+        )
+    end
   end
 
   defp maybe_nothing_found(content, %Params{list: []} = params) do

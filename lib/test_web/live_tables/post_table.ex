@@ -1,5 +1,9 @@
 defmodule TestWeb.PostTable do
   @moduledoc "Users post table"
+  use Phoenix.LiveView
+  use Phoenix.HTML
+  import Ecto.Query
+  alias Phoenix.LiveView.Helpers
   alias TestWeb.Post
   alias TestWeb.Router.Helpers, as: Routes
 

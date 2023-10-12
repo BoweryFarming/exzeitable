@@ -37,7 +37,7 @@ defmodule Exzeitable.HTML.ShowButton do
   def build_show_hide_fields_button(%Params{show_field_buttons: true} = params) do
     params
     |> Text.text(:hide_field_buttons)
-    |> Helpers.tag(:a,
+    |> Helpers.tag(:a, params,
       class: "exz-info-button",
       "phx-click": "hide_buttons"
     )
@@ -46,7 +46,7 @@ defmodule Exzeitable.HTML.ShowButton do
   def build_show_hide_fields_button(%Params{} = params) do
     params
     |> Text.text(:show_field_buttons)
-    |> Helpers.tag(:a,
+    |> Helpers.tag(:a, params,
       class: "exz-info-button",
       "phx-click": "show_buttons"
     )

@@ -1,5 +1,9 @@
 defmodule TestWeb.UserTable do
   @moduledoc "User table"
+  use Phoenix.LiveView
+  use Phoenix.HTML
+  import Ecto.Query
+  alias Phoenix.LiveView.Helpers
   alias TestWeb.Router.Helpers, as: Routes
   alias TestWeb.User
 

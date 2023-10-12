@@ -15,10 +15,7 @@ defmodule Exzeitable do
     # coveralls-ignore-stop
 
     quote do
-      use Phoenix.LiveView
-      use Phoenix.HTML
       import Ecto.Query
-      alias Phoenix.LiveView.Helpers
       alias Exzeitable.{Database, Filter, Format, HTML, Params, Validation}
       @callback render(map) :: {:ok, iolist}
       @type socket :: Phoenix.LiveView.Socket.t()
@@ -63,7 +60,12 @@ defmodule Exzeitable do
       end
 
       def mount(_map, assigns, socket) do
-        assigns = %{params: Params.new([], unquote(opts), __MODULE__)}
+        param_assigns = Keyword.get(unquote(opts), :assigns, %{})
+
+        # put the param assigns on the root assigns
+        assigns =
+          %{params: Params.new([], unquote(opts), __MODULE__)}
+          |> Map.merge(param_assigns)
 
         socket =
           socket
