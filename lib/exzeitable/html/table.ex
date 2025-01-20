@@ -1,8 +1,8 @@
 defmodule Exzeitable.HTML.Table do
   @moduledoc "Builds the table part of the HTML"
-  alias Exzeitable.{Params, Text}
+  alias Exzeitable.{HTML, Params, Text}
   alias Exzeitable.HTML.{ActionButton, Filter, Format, Helpers}
-  alias Phoenix.HTML.Tag
+  alias PhoenixHTMLHelpers.Link
 
   @doc "Output the table as HTML"
   @spec build(map) :: {:safe, iolist}
@@ -20,9 +20,9 @@ defmodule Exzeitable.HTML.Table do
       |> Helpers.tag(:tbody, [])
 
     [head, body]
-    |> Helpers.tag(:table, class: "exz-table")
+    |> Helpers.tag(:table, class: HTML.class(params, "exz-table"))
     |> maybe_nothing_found(params)
-    |> Helpers.tag(:div, class: "exz-table-wrapper")
+    |> Helpers.tag(:div, class: HTML.class(params, "exz-table-wrapper"))
   end
 
   @spec add_actions_header(keyword, map) :: keyword
@@ -71,7 +71,7 @@ defmodule Exzeitable.HTML.Table do
     params
     |> Text.text(:hide)
     |> Helpers.tag(:a,
-      class: "exz-hide-link",
+      class: HTML.class(params, "exz-hide-link"),
       "phx-click": "hide_column",
       "phx-value-column": key
     )
@@ -91,8 +91,9 @@ defmodule Exzeitable.HTML.Table do
         _ -> "#{sort}  "
       end
 
-    Tag.content_tag(:a, label,
-      class: "exz-sort-link",
+    Link.link(label,
+      to: "",
+      class: HTML.class(params, "exz-sort-link"),
       "phx-click": "sort_column",
       "phx-value-column": key
     )
@@ -102,7 +103,7 @@ defmodule Exzeitable.HTML.Table do
     nothing_found =
       params
       |> Text.text(:nothing_found)
-      |> Helpers.tag(:div, class: "exz-nothing-found")
+      |> Helpers.tag(:div, class: HTML.class(params, "exz-nothing-found"))
 
     [content, nothing_found]
   end

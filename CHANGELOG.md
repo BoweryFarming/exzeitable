@@ -2,8 +2,32 @@
 
 ## Unreleased
 
+## v0.6.8 (2024-12-20)
+
+- Update Elixir and Erlang versions
+
+## v0.6.7 (2024-12-18)
+
+- Update to Phoenix LiveView 1.0
+
+## v0.6.6 (2024-07-30)
+
+- User can add additional classes to table elements
+
+## v0.6.5 (2024-06-18)
+- Add `:query_modifier` option to allow dynamic altering of queries
+- Update Elixir and Erlang versions
+- Update dependencies
+
+## v0.6.4 (2024-03-03)
+- Update Elixir and Erlang versions
+- Update dependencies
+
+## v0.6.3 (2023-09-17)
+- Dependency updates and test fixes only
+
 ## v0.6.2 (2023-04-06)
-- Rerelease to fix versioning issue
+- Re-release to fix versioning issue
 
 ## v0.6.1 (2023-04-06)
 - Fix issue with adding action buttons to table
@@ -19,7 +43,7 @@
 
 ## v0.5.5 (2022-07-23)
 
-- Bugfix for default formatter. Previously, it would attempt to_string on all values passing through which breaks `:safe` tuples.
+- Bug fix for default formatter. Previously, it would attempt to_string on all values passing through which breaks `:safe` tuples.
 - Support live routes
 - Increase test coverage
 - Fix CodeCov badge link
@@ -29,7 +53,7 @@
 
 ## v0.5.4 (2022-04-30)
 
-- Add 'mix exzeitable.gen.migration` task for adding pg_trgm extension migration file
+- Add `mix exzeitable.gen.migration` task for adding pg_trgm extension migration file
 - General refactoring
 - Added Params struct for representing the state
 - Fix remaining `use Mix.Config`
